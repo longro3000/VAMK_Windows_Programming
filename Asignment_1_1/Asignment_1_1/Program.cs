@@ -13,12 +13,12 @@ namespace Assignment_1_1
             int[,] matrix3 = new int[num, num];
 
             Console.WriteLine("The content of matrix 1 :");
-            for (int i = 0; i <  matrix1.GetLength(0); i++)
+            for (int i = 0; i < matrix1.GetLength(0); i++)
             {
                 for (int j = 0; j < matrix1.GetLength(1); j++)
                 {
                     matrix1[i, j] = r.Next(100);
-                    Console.Write("{0,5}", matrix1[i,j]);
+                    Console.Write("{0,5}", matrix1[i, j]);
                 }
                 Console.WriteLine();
             }
@@ -39,7 +39,7 @@ namespace Assignment_1_1
             {
                 for (int j = 0; j < matrix3.GetLength(1); j++)
                 {
-                    matrix3[i, j] = matrix1[i,j] + matrix2[i,j];
+                    matrix3[i, j] = matrix1[i, j] + matrix2[i, j];
                     Console.Write("{0,5}", matrix3[i, j]);
                 }
                 Console.WriteLine();
@@ -74,3 +74,4 @@ namespace Assignment_1_1
         }
     }
 }
+
