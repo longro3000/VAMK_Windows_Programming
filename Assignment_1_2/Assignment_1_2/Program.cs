@@ -21,6 +21,7 @@ namespace Assignment_1_2
             Customers[4] = new Customer(29, "mno", 2);
 
             Flights[0] = new Flight(4, "SaiGon", "HaNoi", "12.01.88");
+
             Flights[1] = new Flight(2, "SaiGon", "HaNoi", "12.01.88");
             Flights[2] = new Flight(3, "SaiGon", "HaNoi", "12.01.88");
 
@@ -47,7 +48,7 @@ namespace Assignment_1_2
             Console.Write("search customer id: ");
             int idSearch  = Int16.Parse(Console.ReadLine());
 
-            Console.WriteLine(" Customers length" + Customers.Length);
+     
             Console.WriteLine(" Customer Found: ");
             for (int i = 0; i < Customers.Length; i++)
             {
