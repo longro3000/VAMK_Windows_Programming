@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assignment_3_1
 {
-    class Flight
+    public class Flight
     {
         public int id;
         public String origin, destination, date;
@@ -33,5 +33,9 @@ namespace Assignment_3_1
             return "Flight ID: " + id + ", Origin: " + origin + ", Destination: " + destination + ", Date: " + date + ", Price: " + price + "\n";
         }
 
+        public Boolean CheckPrice(int price)
+        {
+            return (price < this.price);
+        }
     }
 }
