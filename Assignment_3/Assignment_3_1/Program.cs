@@ -25,7 +25,7 @@ namespace Assignment_3_1
                 Console.WriteLine(airlineCompany[i].toString());
             }
 
-            Console.WriteLine("Enter a flight's ID: ");
+            Console.Write("Enter a flight's ID: ");
             int id = Convert.ToInt16(Console.ReadLine());
 
             Console.WriteLine("Flight found: ");
@@ -35,7 +35,7 @@ namespace Assignment_3_1
                 Console.WriteLine(airlineCompany[i].FindFlight(id));
             }
 
-            Console.WriteLine("Enter a price: ");
+            Console.Write("Enter a price: ");
             int price = Convert.ToInt16(Console.ReadLine());
 
             ProcessFlightDelegate pfd = new ProcessFlightDelegate(DisplayFlight);

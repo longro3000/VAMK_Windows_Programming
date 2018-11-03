@@ -33,7 +33,7 @@ namespace Assignment_3_1
                 return flights[index];
             }
         }
-
+        
         public void ProcessCheapPrice(ProcessFlightDelegate processFlightDelegate, int price)
         {
             foreach (Flight flight in flights)
