@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace Assignment_3_1
 {
-    public delegate void ProcessFlightDelegate(Flight flight);
+    public delegate String ProcessFlightDelegate(Flight flight);
 
     class Program
     {
-        static void DisplayFlight(Flight flight)
-        {
-            Console.WriteLine(" Flight's ID: {0}, Flight's Origin: {1}, Flight's Destination: {2}, Flight's Date: {3}, Flight's Price: {4}", flight.id, flight.origin, flight.destination, flight.date, flight.price);
-        }
+        
+
+
         static void Main(string[] args)
         {
             AirlineCompany airlineCompany = new AirlineCompany();
@@ -38,9 +37,11 @@ namespace Assignment_3_1
             Console.Write("Enter a price: ");
             int price = Convert.ToInt16(Console.ReadLine());
 
-            ProcessFlightDelegate pfd = new ProcessFlightDelegate(DisplayFlight);
+            ProcessFlightDelegate pfd = new ProcessFlightDelegate(airlineCompany.DisplayFlight);
+            ProcessFlightDelegate pfd2 = new ProcessFlightDelegate(airlineCompany.DisplayFlightshort);
+            ProcessFlightDelegate pfd3 = pfd + pfd2;
 
-            airlineCompany.ProcessCheapPrice(pfd, price);
+            Console.WriteLine(airlineCompany.ProcessCheapPrice(pfd3, price));
 
             Console.ReadLine();
         }

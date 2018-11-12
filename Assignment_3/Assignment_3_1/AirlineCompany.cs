@@ -33,16 +33,31 @@ namespace Assignment_3_1
                 return flights[index];
             }
         }
-        
-        public void ProcessCheapPrice(ProcessFlightDelegate processFlightDelegate, int price)
+
+        public String DisplayFlight(Flight flight)
         {
+            return String.Format(" Flight's ID: {0}, Flight's Origin: {1}, Flight's Destination: {2}, Flight's Date: {3}, Flight's Price: {4}" , flight.id , flight.origin, flight.destination, flight.date, flight.price);
+        }
+
+
+        public String DisplayFlightshort(Flight flight)
+        {
+            return String.Format("Flight's Origin: {0}, Flight's Destination: {1}", flight.origin, flight.destination);
+        }
+
+
+        public String ProcessCheapPrice(ProcessFlightDelegate processFlightDelegate, int price)
+        {
+
+            String info = "";
             foreach (Flight flight in flights)
             {
                 if (flight.CheckPrice(price))
                 {
-                    processFlightDelegate(flight);
+                  info +=  processFlightDelegate(flight) + "\n";
                 }
             }
+            return info;
         }
 
     }
