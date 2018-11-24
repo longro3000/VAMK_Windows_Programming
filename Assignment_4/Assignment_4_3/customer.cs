@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
-namespace Assignment_4_2
+namespace Assignment_4_3
 {
     public interface Icustomer
     {
@@ -36,6 +38,7 @@ namespace Assignment_4_2
             set;
         }
     }
+    [Serializable]
     class Customer
     {
         private string name, address, arrivalDate;
@@ -122,34 +125,20 @@ namespace Assignment_4_2
         }
         //---------------------------------------------------------------------IO-----------------------------------------------------------------------------------------------
 
-        BinaryWriter binaryWriter;
-        BinaryReader binaryReader;
+        BinaryFormatter binaryFormatter = new BinaryFormatter();
 
 
-        string filePath = @"U:\Temp\customers.dat";
         public void WriteToFile()
         {
-            try
-            {
-
-                //Here we initialize binaryWriter object. We use @ before strings
-
-                //to void having to escape special characters
-                binaryWriter = new BinaryWriter(new FileStream(filePath, FileMode.Append));
-            }
-            catch (IOException e)
-            {
-                Console.WriteLine(e.Message + "\nCannot open " + filePath);
-                return;
-            }
-
-
+            string filePath = @"U:\Temp\customers_ser.dat";
+            FileStream fileStream = new FileStream(filePath, FileMode.Append);
             // Here we write some data into the file. Note, that the decimal
             //separator is set to , because of finnish location.
             try
             {
 
-                binaryWriter.Write(this.ToString());
+                binaryFormatter.Serialize(fileStream, this.ToString());
+                fileStream.Flush();
 
             }
             catch (IOException e)
@@ -157,45 +146,49 @@ namespace Assignment_4_2
                 Console.WriteLine(e.Message + "\nWrite error.");
             }
 
-            binaryWriter.Close();
+            fileStream.Close();
         }
 
         public void ReadFromFile()
         {
-            try
+            string filePath = @"U:\Temp\customers_ser.dat";
+            FileStream fileStream = new FileStream(filePath, FileMode.Open);
+            string item = "";
+            object obj = null;
+            for (;;)
             {
-                binaryReader = new BinaryReader(new FileStream(filePath, FileMode.Open));
-            }
-            catch (FileNotFoundException e)
-            {
-                Console.WriteLine(e.Message + "\nCannot open " + filePath);
-                return;
-            }
-            string item;
-            try
-            {
-                // Read an inventory entry. 
-                while ((item = binaryReader.ReadString()) != null)
+                try
                 {
-                    char[] delimiterChars = { ',' };
-                    string[] info = item.Split(delimiterChars);
+                    obj = binaryFormatter.Deserialize(fileStream);
+                    //obj = soapFormatter.Deserialize(fileStream);
+                    //Here we check whether obj is of type Employee 
+                    //or not and if it is, we type cast it to Employee
+                    //and call the GetEmployee() method.
+                    if (obj is string)
+                    {
+                        item += obj;
+                    }
 
-                    foreach (string i in info)
-                        Console.Write(i + " ");
-
-                    Console.WriteLine(Environment.NewLine + "---------" + Environment.NewLine);
+                }
+                catch (EndOfStreamException e)
+                {
+                    Console.WriteLine("No object left!" + e.Message);
+                }
+                catch (SerializationException)
+                {
+                    // Console.WriteLine(e.Message);
+                    break;
+                }
+                catch (System.Xml.XmlException)
+                {
+                    //Console.WriteLine(e.Message);
+                    break;
                 }
 
-
-                binaryReader.Close();
             }
-            catch (IOException e)
-            {
-                Console.WriteLine(e.Message + "Read error.");
-            }
-
-        }        
-        
+            Console.WriteLine(item);
+            fileStream.Close();
+        }
         //----------------------------------------------------SEARCH METHOD-----------------------------------------------------------------
 
         public string Search(string type, string payload)

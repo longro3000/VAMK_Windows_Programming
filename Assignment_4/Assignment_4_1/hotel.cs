@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Collections;
 using System.IO;
 
-namespace Assignment_4_2
+namespace Assignment_4_1
     {
         public interface Ihotel
         {
@@ -135,22 +135,19 @@ namespace Assignment_4_2
                 }
             }
 
-        //---------------------------------------------------------------------IO-----------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------IO-----------------------------------------------------------------------------------------------
 
-        BinaryWriter binaryWriter;
-        BinaryReader binaryReader;
+        TextWriter textWriter;
+        TextReader textReader;
 
 
-        string filePath = @"U:\Temp\hotels.dat";
+        String filePath = @"U:\Temp\hotels.txt";
         public void WriteToFile()
         {
             try
             {
-
-                //Here we initialize binaryWriter object. We use @ before strings
-
-                //to void having to escape special characters
-                binaryWriter = new BinaryWriter(new FileStream(filePath, FileMode.Append));
+                //Here we define a StreamWriter object for appending text.
+                textWriter = new StreamWriter(filePath, true);
             }
             catch (IOException e)
             {
@@ -158,13 +155,12 @@ namespace Assignment_4_2
                 return;
             }
 
-
             // Here we write some data into the file. Note, that the decimal
             //separator is set to , because of finnish location.
             try
             {
 
-                binaryWriter.Write(this.ToString());
+                textWriter.WriteLine(this.ToString());
 
             }
             catch (IOException e)
@@ -172,14 +168,16 @@ namespace Assignment_4_2
                 Console.WriteLine(e.Message + "\nWrite error.");
             }
 
-            binaryWriter.Close();
+            textWriter.Close();
         }
 
         public void ReadFromFile()
         {
             try
             {
-                binaryReader = new BinaryReader(new FileStream(filePath, FileMode.Open));
+                textReader = new StreamReader(filePath);
+                // textReader = new StreamReader(@" d:\temp\products.txt");
+
             }
             catch (FileNotFoundException e)
             {
@@ -190,7 +188,7 @@ namespace Assignment_4_2
             try
             {
                 // Read an inventory entry. 
-                while ((item = binaryReader.ReadString()) != null)
+                while ((item = textReader.ReadLine()) != null)
                 {
                     char[] delimiterChars = { ';' };
                     string[] info = item.Split(delimiterChars);
@@ -202,7 +200,7 @@ namespace Assignment_4_2
                 }
 
 
-                binaryReader.Close();
+                textReader.Close();
             }
             catch (IOException e)
             {
@@ -210,7 +208,7 @@ namespace Assignment_4_2
             }
 
         }
-        //----------------------------------------------------SEARCH METHOD-----------------------------------------------------------------
+//----------------------------------------------------SEARCH METHOD-----------------------------------------------------------------
 
         public string Search(string type, string payload)
         {

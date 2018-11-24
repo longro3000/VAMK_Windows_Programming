@@ -5,138 +5,134 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Assignment_4_2
+namespace Assignment_4_1
 {
-    public interface Iroom
+    public interface Icustomer
     {
         String Search(string type, string payload);
-        int Number
+        int roomNumber
         {
             get;
             set;
         }
-        String Area
+        int stayLength
         {
             get;
             set;
         }
-        String Type
+        String Name
         {
             get;
             set;
         }
-        String Description
+        String Address
         {
             get;
             set;
         }
-        double Price
+        String ArrivalDate
         {
             get;
             set;
         }
     }
-    class Room : Iroom
+    class Customer
     {
-        private int number;
-        private String area, type, description;
-        private double price;
+        private string name, address, arrivalDate;
+        private int roomNumber, stayLength;
 
-        public Room(int number, string area, string type, string description, double price)
+        public Customer(string name, string address, string date, int number, int length)
         {
-            this.number = number;
-            this.area = area;
-            this.type = type;
-            this.description = description;
-            this.price = price;
+            this.name = name;
+            this.address = address;
+            this.arrivalDate = date;
+            this.roomNumber = number;
+            this.stayLength = length;
         }
+
         public string ToString()
         {
-            return this.number + ',' + this.area + ',' + this.type + ',' + this.description + ',' + this.price;
-        }
-        public string Area
-        {
-            get
-            {
-                return area;
-            }
-            set
-            {
-                if (value.Length != 0)
-                    area = value;
-                area = "unknown";
-            }
-        }
-        public string Type
-        {
-            get
-            {
-                return type;
-            }
-            set
-            {
-                if (value.Length != 0)
-                    type = value;
-                type = "unknown";
-            }
-        }
-        public string Description
-        {
-            get
-            {
-                return description;
-            }
-            set
-            {
-                if (value.Length != 0)
-                    description = value;
-                description = "unknown";
-            }
+            return this.name + ',' + this.address + ',' + this.arrivalDate + ',' + this.roomNumber + ',' + this.stayLength;
         }
 
-        public int Number
+        public string Name
         {
             get
             {
-                return number;
+                return name;
+            }
+            set
+            {
+                if (value.Length != 0)
+                    name = value;
+                name = "unknown";
+            }
+        }
+        public string Address
+        {
+            get
+            {
+                return address;
+            }
+            set
+            {
+                if (value.Length != 0)
+                    address = value;
+                address = "unknown";
+            }
+        }
+        public string ArrivalDate
+        {
+            get
+            {
+                return arrivalDate;
+            }
+            set
+            {
+                if (value.Length != 0)
+                    arrivalDate = value;
+                arrivalDate = "unknown";
+            }
+        }
+        public int RoomNumber
+        {
+            get
+            {
+                return roomNumber;
             }
             set
             {
                 if (value != 0)
-                    number = value;
-                number = 0;
+                    roomNumber = value;
+                roomNumber = 0;
             }
         }
-
-        public double Price
+        public int StayLength
         {
             get
             {
-                return price;
+                return stayLength;
             }
             set
             {
                 if (value != 0)
-                    price = value;
-                price = 0;
+                    stayLength = value;
+                stayLength = 0;
             }
         }
         //---------------------------------------------------------------------IO-----------------------------------------------------------------------------------------------
 
-        BinaryWriter binaryWriter;
-        BinaryReader binaryReader;
+        TextWriter textWriter;
+        TextReader textReader;
 
 
-        string filePath = @"U:\Temp\rooms.dat";
+        String filePath = @"U:\Temp\customers.txt";
         public void WriteToFile()
         {
             try
             {
-
-                //Here we initialize binaryWriter object. We use @ before strings
-
-                //to void having to escape special characters
-                binaryWriter = new BinaryWriter(new FileStream(filePath, FileMode.Append));
+                //Here we define a StreamWriter object for appending text.
+                textWriter = new StreamWriter(filePath, true);
             }
             catch (IOException e)
             {
@@ -144,13 +140,12 @@ namespace Assignment_4_2
                 return;
             }
 
-
             // Here we write some data into the file. Note, that the decimal
             //separator is set to , because of finnish location.
             try
             {
 
-                binaryWriter.Write(this.ToString());
+                textWriter.WriteLine(this.ToString());
 
             }
             catch (IOException e)
@@ -158,14 +153,16 @@ namespace Assignment_4_2
                 Console.WriteLine(e.Message + "\nWrite error.");
             }
 
-            binaryWriter.Close();
+            textWriter.Close();
         }
 
         public void ReadFromFile()
         {
             try
             {
-                binaryReader = new BinaryReader(new FileStream(filePath, FileMode.Open));
+                textReader = new StreamReader(filePath);
+                // textReader = new StreamReader(@" d:\temp\products.txt");
+
             }
             catch (FileNotFoundException e)
             {
@@ -176,7 +173,7 @@ namespace Assignment_4_2
             try
             {
                 // Read an inventory entry. 
-                while ((item = binaryReader.ReadString()) != null)
+                while ((item = textReader.ReadLine()) != null)
                 {
                     char[] delimiterChars = { ',' };
                     string[] info = item.Split(delimiterChars);
@@ -188,7 +185,7 @@ namespace Assignment_4_2
                 }
 
 
-                binaryReader.Close();
+                textReader.Close();
             }
             catch (IOException e)
             {
@@ -204,32 +201,32 @@ namespace Assignment_4_2
 
             switch (type)
             {
-                case "number":
-                    if (this.number == int.Parse(payload))
+                case "name":
+                    if (this.name == payload)
                     {
                         check = true;
                     }
                     break;
-                case "constructionDate":
-                    if (this.area == payload)
+                case "address":
+                    if (this.address == payload)
                     {
                         check = true;
                     }
                     break;
-                case "type":
-                    if (this.type == payload)
+                case "arrivalDate":
+                    if (this.arrivalDate == payload)
                     {
                         check = true;
                     }
                     break;
-                case "description":
-                    if (this.description == payload)
+                case "roomNumber":
+                    if (this.roomNumber == int.Parse(payload))
                     {
                         check = true;
                     }
                     break;
-                case "price":
-                    if (this.number == double.Parse(payload))
+                case "stayLength":
+                    if (this.stayLength == int.Parse(payload))
                     {
                         check = true;
                     }
@@ -248,6 +245,6 @@ namespace Assignment_4_2
                 return "";
             }
         }
-
     }
 }
+

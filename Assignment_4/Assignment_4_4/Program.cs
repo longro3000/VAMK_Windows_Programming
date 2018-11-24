@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
 
-namespace Assignment_4_2
+namespace Assignment_4_4
 {
     class Program
     {
@@ -21,6 +21,8 @@ namespace Assignment_4_2
             customers.Add(customer2);
             customers.Add(customer3);
             //WRITE CUSTOMER TO FILE
+
+            customer1.WriteXML();
             customer1.WriteToFile();
             customer2.WriteToFile();
             customer3.WriteToFile();
@@ -34,6 +36,7 @@ namespace Assignment_4_2
             rooms.Add(room1);
             rooms.Add(room2);
             //WRITE ROOM TO FILE
+            room1.WriteXML();
             room1.WriteToFile();
             room2.WriteToFile();
             //READ ROOM FROM FILE
@@ -53,6 +56,7 @@ namespace Assignment_4_2
             hotels.Add(hotel1);
             hotels.Add(hotel2);
             //WRITE HOTEL TO FILE
+            hotel1.WriteXML();
             hotel1.WriteToFile();
             hotel2.WriteToFile();
             //READ HOTEL FROM FILE
